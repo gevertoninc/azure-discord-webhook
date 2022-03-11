@@ -5,9 +5,14 @@ const app = express()
 
 const port = envs.PORT
 
-app.get('/', (req, res) => {
+app.get('', (req, res) => {
   console.log('req', req)
   res.send('Dorime')
+})
+
+app.post('', (req, res) => {
+  console.log('req', req)
+  res.send('Ameno')
 })
 
 app.listen(port, () => {
