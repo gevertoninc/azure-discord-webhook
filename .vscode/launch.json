@@ -1,0 +1,11 @@
+{
+  "configurations": [
+    {
+      "name": "Depurador legal",
+      "request": "attach",
+      "restart": true,
+      "type": "node"
+    }
+  ],
+  "version": "0.2.0"
+}

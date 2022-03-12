@@ -9,13 +9,13 @@ app.use(express.json())
 const port = envs.PORT
 
 app.post('', req => {
-  console.log('req.requests', req.requests)
+  console.info('req.requests', req.requests)
 
   res.send('Ameno')
 })
 
 app.listen(port, () => {
-  console.log(`App listening on port ${port}`)
+  console.info(`App listening on port ${port}`)
 })
 
 const sendToDiscord = async () => {
@@ -29,11 +29,15 @@ const sendToDiscord = async () => {
   }
 
   try {
-    const response = await axios.post(url, data)
-
-    console.info('response', response)
+    await axios.post(url, data)
   } catch (error) {
-    console.error('error', error)
+    const {
+      response: { data, status, statusText }
+    } = error
+
+    const outputError = { data, status, statusText }
+
+    console.error(outputError)
   }
 }
 

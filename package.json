@@ -6,6 +6,7 @@
   "scripts": {
     "prettier": "npx prettier --write .",
     "start": "node index.js",
+    "start:debug": "nodemon --inspect index.js",
     "start:dev": "nodemon index.js"
   },
   "keywords": [
