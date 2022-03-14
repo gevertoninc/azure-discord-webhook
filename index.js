@@ -8,23 +8,24 @@ app.use(express.json())
 
 const port = envs.PORT
 
-app.post('', (req, res) => {
-  console.info('req.body.resource.requests', req.body.resource.requests)
-
-  res.send('Ameno')
+app.post('', async req => {
+  await sendToDiscord(
+    req.body.resource.definition.name,
+    req.body.resource.status,
+    req.body.resource.requests[0].requestedFor.displayName
+  )
 })
 
 app.listen(port, () => {
   console.info(`App listening on port ${port}`)
 })
 
-const sendToDiscord = async () => {
+const sendToDiscord = async (repository, status, culprit) => {
   const url = envs.DISCORD_URL
 
   const data = {
     avatar_url: envs.AVATAR_URL,
-    content:
-      'Build do business-platform-edge-bff terminou com status succeeded',
+    content: `Build do ${repository} terminou com status ${status} - culpa do ${culprit}`,
     username: envs.USERNAME
   }
 
@@ -40,7 +41,3 @@ const sendToDiscord = async () => {
     console.error(outputError)
   }
 }
-
-app.get('', () => {
-  sendToDiscord()
-})
