@@ -1,8 +1,8 @@
 const axios = require('axios')
 const { envs } = require('./app.env')
 
-const sendToDiscord = async (repository, status, culprit) => {
-  const url = envs.DISCORD_URL
+const sendBuildCompleteInfoToDiscord = async (repository, status, culprit) => {
+  const discordUrl = envs.BUILD_COMPLETE_URL
 
   const data = {
     avatar_url: envs.AVATAR_URL,
@@ -10,10 +10,47 @@ const sendToDiscord = async (repository, status, culprit) => {
     username: envs.USERNAME
   }
 
-  await sendTo(url, data)
+  await send(discordUrl, data)
 }
 
-const sendTo = async (url, data) => {
+const sendGitPullRequestCreatedInfoToDiscord = async (
+  source,
+  target,
+  repository,
+  culprit,
+  title,
+  description,
+  prUrl
+) => {
+  const discordUrl = envs.GIT_PULLREQUEST_CREATED_URL
+
+  const data = {
+    avatar_url: envs.AVATAR_URL,
+    content: `PR da ${source} para a ${target} do ${repository} criada pelo ${culprit} - título: ${title}, descrição: ${description}, URL: ${prUrl}`,
+    username: envs.USERNAME
+  }
+
+  await send(discordUrl, data)
+}
+
+const sendMsVssCodeGitPullRequestCommentEventInfoToDiscord = async (
+  author,
+  number,
+  content,
+  url
+) => {
+  const discordUrl = envs.GIT_PULLREQUEST_CREATED_URL
+
+  const data = {
+    avatar_url: envs.AVATAR_URL,
+    content: `${author} comentou na PR ${number}: ${content} - link: ${url}`,
+    username: envs.USERNAME
+  }
+
+  await send(discordUrl, data)
+}
+
+const send = async (url, data) => {
   try {
     await axios.post(url, data)
   } catch (error) {
@@ -27,4 +64,8 @@ const sendTo = async (url, data) => {
   }
 }
 
-module.exports = { sendToDiscord }
+module.exports = {
+  sendBuildCompleteInfoToDiscord,
+  sendGitPullRequestCreatedInfoToDiscord,
+  sendMsVssCodeGitPullRequestCommentEventInfoToDiscord
+}
