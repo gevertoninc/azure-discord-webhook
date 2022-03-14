@@ -8,8 +8,8 @@ app.use(express.json())
 
 const port = envs.PORT
 
-app.post('', req => {
-  console.info('req.requests', req.requests)
+app.post('', (req, res) => {
+  console.info('req.body.resource.requests', req.body.resource.requests)
 
   res.send('Ameno')
 })
